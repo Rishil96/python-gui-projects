@@ -5,6 +5,10 @@ from snake import Snake
 from food import Food
 from scoreboard import ScoreBoard
 
+# Screen Borders
+POSITIVE_BOUNDARY = 290
+NEGATIVE_BOUNDARY = -290
+
 # Setup Screen configurations
 screen = Screen()
 screen.setup(width=600, height=600)
@@ -40,18 +44,19 @@ while game_is_on:
     # Detect collision with food by checking if distance of head with food is less than equal to 10
     if snake.head.distance(food) < 15:
         food.refresh()
+        snake.extend()
         score.update_scoreboard()
 
     # Detect collision with wall
-    if snake.head.xcor() > 290 or snake.head.xcor() < -290 or snake.head.ycor() > 290 or snake.head.ycor() < -290:
+    if (snake.head.xcor() > POSITIVE_BOUNDARY or snake.head.xcor() < NEGATIVE_BOUNDARY or
+       snake.head.ycor() > POSITIVE_BOUNDARY or snake.head.ycor() < NEGATIVE_BOUNDARY):
         game_is_on = False
         score.game_over()
 
-# TODO 3: Create snake food
-# TODO 4: Detect collision with food
-# TODO 5: Create a scoreboard
-# TODO 6: Detect collision with wall
-# TODO 7: Detect collision with tail
-
+    # Detect collision with tail
+    for segment in snake.segments[1:]:
+        if snake.head.distance(segment) < 10:
+            game_is_on = False
+            score.game_over()
 
 screen.exitonclick()

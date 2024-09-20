@@ -22,11 +22,23 @@ class Snake:
         Creates the initial snake body and stores it in segments list
         """
         for position in STARTING_POSITIONS:
-            segment = Turtle(shape="square")
-            segment.penup()
-            segment.color("white")
-            segment.goto(position)
-            self.segments.append(segment)
+            self.add_segment(position)
+
+    def add_segment(self, position) -> None:
+        """
+        Add a new segment to the snake body
+        """
+        segment = Turtle(shape="square")
+        segment.penup()
+        segment.color("white")
+        segment.goto(position)
+        self.segments.append(segment)
+
+    def extend(self) -> None:
+        """
+        Extend when the snake eats food
+        """
+        self.add_segment(position=self.segments[-1].position())
 
     def move(self) -> None:
         """
