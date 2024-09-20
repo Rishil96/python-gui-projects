@@ -1,6 +1,6 @@
 # Snake Game
 import time
-from turtle import Screen, Turtle
+from turtle import Screen
 from snake import Snake
 
 # Setup Screen configurations
@@ -25,7 +25,7 @@ screen.onkey(new_snake.right, "Right")
 # Update the screen after snake is created so creation animation is skipped to the GUI user
 screen.update()
 
-# TODO 2: Move the snake
+# Start game function
 game_is_on = True
 
 while game_is_on:
