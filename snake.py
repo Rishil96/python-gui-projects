@@ -9,7 +9,9 @@ RIGHT = 0
 
 
 class Snake:
-
+    """
+    Models a snake that is created on Screen from turtle module
+    """
     def __init__(self):
         self.segments = []
         self.create_snake()
