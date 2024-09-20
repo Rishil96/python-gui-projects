@@ -3,6 +3,7 @@ import time
 from turtle import Screen
 from snake import Snake
 from food import Food
+from scoreboard import ScoreBoard
 
 # Setup Screen configurations
 screen = Screen()
@@ -13,16 +14,17 @@ screen.title("Snake Game")
 # Stop rendering stuff on screen till we hit update
 screen.tracer(0)
 
-# Create a snake body and food
-new_snake = Snake()
+# Create a snake body, food and scoreboard
+snake = Snake()
 food = Food()
+score = ScoreBoard()
 
 # Create listeners to control the snake movement directions
 screen.listen()
-screen.onkey(new_snake.up, "Up")
-screen.onkey(new_snake.down, "Down")
-screen.onkey(new_snake.left, "Left")
-screen.onkey(new_snake.right, "Right")
+screen.onkey(snake.up, "Up")
+screen.onkey(snake.down, "Down")
+screen.onkey(snake.left, "Left")
+screen.onkey(snake.right, "Right")
 
 # Update the screen after snake is created so creation animation is skipped to the GUI user
 screen.update()
@@ -33,13 +35,17 @@ game_is_on = True
 while game_is_on:
     screen.update()
     time.sleep(0.1)
-    new_snake.move()
+    snake.move()
 
     # Detect collision with food by checking if distance of head with food is less than equal to 10
-    if new_snake.head.distance(food) <= 10:
-        print("Eaten food!")
+    if snake.head.distance(food) < 15:
         food.refresh()
+        score.update_scoreboard()
 
+    # Detect collision with wall
+    if snake.head.xcor() > 290 or snake.head.xcor() < -290 or snake.head.ycor() > 290 or snake.head.ycor() < -290:
+        game_is_on = False
+        score.game_over()
 
 # TODO 3: Create snake food
 # TODO 4: Detect collision with food
