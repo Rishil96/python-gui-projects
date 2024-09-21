@@ -4,6 +4,13 @@ from turtle import Screen
 from paddle import Paddle
 from ball import Ball
 
+# Global variables
+# Screen Config
+SCREEN_TITLE = "Pong Arcade"
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_BACKGROUND_COLOR = "black"
+
 # Initial X and Y positions of paddle
 PADDLE_LEFT_X = -350
 PADDLE_RIGHT_X = 350
@@ -11,9 +18,9 @@ PADDLE_Y = 0
 
 # Pong Screen Setup
 screen = Screen()
-screen.title("Pong Arcade")
-screen.setup(width=800, height=600)
-screen.bgcolor("black")
+screen.title(SCREEN_TITLE)
+screen.setup(width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
+screen.bgcolor(SCREEN_BACKGROUND_COLOR)
 screen.tracer(0)
 
 # Create paddles and ball
@@ -41,7 +48,9 @@ while game_is_on:
     # Keep the ball moving
     ball.move()
 
-    # Detect collision with upper wall
-    ball.detect_wall_collision()
+    # Detect collision with upper/lower wall and paddle
+    ball.bounce_x(paddle_left)
+    ball.bounce_x(paddle_right)
+    ball.bounce_y()
 
 screen.exitonclick()
