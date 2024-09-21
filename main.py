@@ -1,8 +1,8 @@
 # Pong Arcade Game
-import time
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
+from scoreboard import Scoreboard
 
 # Global variables
 # Screen Config
@@ -27,6 +27,7 @@ screen.tracer(0)
 paddle_left = Paddle(x=PADDLE_LEFT_X, y=PADDLE_Y)
 paddle_right = Paddle(x=PADDLE_RIGHT_X, y=PADDLE_Y)
 ball = Ball()
+score = Scoreboard()
 
 # Listen to paddle movements
 screen.listen()
@@ -42,7 +43,6 @@ game_is_on = True
 
 while game_is_on:
     # Screen animation updates every 0.1 seconds
-    time.sleep(0.1)
     screen.update()
 
     # Keep the ball moving
@@ -56,7 +56,10 @@ while game_is_on:
     # Detect when paddle misses
     if ball.xcor() < -380:
         ball.reset_position()
+        score.increase_score(False)
+
     if ball.xcor() > 380:
         ball.reset_position()
+        score.increase_score(True)
 
 screen.exitonclick()

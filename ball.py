@@ -1,5 +1,4 @@
 import time
-from random import randint
 from turtle import Turtle
 from paddle import Paddle
 
@@ -8,6 +7,9 @@ UPPER_WALL_LIMIT = 280
 LOWER_WALL_LIMIT = -280
 LEFT_WALL_LIMIT = -320
 RIGHT_WALL_LIMIT = 320
+
+
+SPEED_OFFSET = 0.9
 
 
 class Ball(Turtle):
@@ -22,11 +24,13 @@ class Ball(Turtle):
         self.setheading(30)
         self.x_move = 10
         self.y_move = 10
+        self.move_speed = 0.1
 
     def move(self) -> None:
         """
         Ball movement functionality
         """
+        time.sleep(self.move_speed)
         new_x = self.xcor() + self.x_move
         new_y = self.ycor() + self.y_move
         self.goto(new_x, new_y)
@@ -59,6 +63,8 @@ class Ball(Turtle):
         """
         if self.detect_paddle_collision(paddle):
             self.x_move *= -1
+            self.move_speed *= SPEED_OFFSET
+            print(self.move_speed)
 
     def reset_position(self) -> None:
         """
@@ -67,3 +73,4 @@ class Ball(Turtle):
         self.goto(0, 0)
         self.x_move *= -1
         self.y_move *= -1
+        self.move_speed = 0.1
