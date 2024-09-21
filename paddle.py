@@ -1,5 +1,9 @@
 from turtle import Turtle
 
+# Constants for paddle movement limit
+PADDLE_TOP_LIMIT = 250
+PADDLE_BOTTOM_LIMIT = -250
+
 
 class Paddle(Turtle):
 
@@ -18,10 +22,12 @@ class Paddle(Turtle):
         """
         Move the paddle upwards
         """
-        self.forward(20)
+        if self.ycor() < PADDLE_TOP_LIMIT:
+            self.forward(20)
 
     def move_down(self):
         """
         Move the paddle downwards
         """
-        self.backward(20)
+        if self.ycor() > PADDLE_BOTTOM_LIMIT:
+            self.backward(20)
