@@ -2,14 +2,14 @@ import time
 from turtle import Turtle
 from paddle import Paddle
 
+# Constants for ball movement and wall co-ordinates
 BALL_MOVE_DISTANCE = 10
 UPPER_WALL_LIMIT = 280
 LOWER_WALL_LIMIT = -280
 LEFT_WALL_LIMIT = -320
 RIGHT_WALL_LIMIT = 320
 
-
-SPEED_OFFSET = 0.9
+SPEED_OFFSET = 0.7
 
 
 class Ball(Turtle):

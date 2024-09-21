@@ -1,8 +1,8 @@
 from turtle import Turtle
 
 ALIGNMENT = "center"
-FONT = ("Courier", 70, "bold")
-WINNING_SCORE = 1
+FONT = ("Courier", 60, "bold")
+WINNING_SCORE = 3
 
 
 class Scoreboard(Turtle):
@@ -24,6 +24,18 @@ class Scoreboard(Turtle):
         Write scores on the screen
         """
         self.clear()
+
+        # Draw dashed line in the middle of the screen
+        self.goto(0, -300)
+        self.setheading(90)
+        self.shapesize(stretch_len=2)
+        for _ in range(30):
+            self.pendown()
+            self.forward(10)
+            self.penup()
+            self.forward(10)
+
+        # Write scores for left and write player
         self.goto(-100, 200)
         self.write(self.left_score, align=ALIGNMENT, font=FONT)
         self.goto(100, 200)

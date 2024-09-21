@@ -54,10 +54,12 @@ while game_is_on:
     ball.bounce_y()
 
     # Detect when paddle misses
+    # Paddle miss on left
     if ball.xcor() < -380:
         ball.reset_position()
         score.increase_score(False)
 
+    # Paddle miss on right
     if ball.xcor() > 380:
         ball.reset_position()
         score.increase_score(True)
