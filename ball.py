@@ -6,8 +6,8 @@ from paddle import Paddle
 BALL_MOVE_DISTANCE = 10
 UPPER_WALL_LIMIT = 280
 LOWER_WALL_LIMIT = -280
-LEFT_WALL_LIMIT = -350
-RIGHT_WALL_LIMIT = 350
+LEFT_WALL_LIMIT = -320
+RIGHT_WALL_LIMIT = 320
 
 
 class Ball(Turtle):
@@ -44,7 +44,7 @@ class Ball(Turtle):
         """
         # Upper/Lower wall collision bounce
         if self.detect_wall_collision():
-            self.y_move = -self.y_move
+            self.y_move *= -1
 
     def detect_paddle_collision(self, paddle: Paddle) -> bool:
         """
@@ -58,4 +58,12 @@ class Ball(Turtle):
         Bounce logic when ball hits a paddle
         """
         if self.detect_paddle_collision(paddle):
-            self.x_move = -self.x_move
+            self.x_move *= -1
+
+    def reset_position(self) -> None:
+        """
+        When a player loses the point, ball is reset to center of the screen and game restarts
+        """
+        self.goto(0, 0)
+        self.x_move *= -1
+        self.y_move *= -1
