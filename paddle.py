@@ -6,7 +6,9 @@ PADDLE_BOTTOM_LIMIT = -250
 
 
 class Paddle(Turtle):
-
+    """
+    Models a paddle used to play pong
+    """
     def __init__(self, x, y):
         super().__init__()
         self.shape("square")
@@ -18,14 +20,14 @@ class Paddle(Turtle):
         self.penup()
         self.goto(x, y)
 
-    def move_up(self):
+    def move_up(self) -> None:
         """
         Move the paddle upwards
         """
         if self.ycor() < PADDLE_TOP_LIMIT:
             self.forward(20)
 
-    def move_down(self):
+    def move_down(self) -> None:
         """
         Move the paddle downwards
         """
