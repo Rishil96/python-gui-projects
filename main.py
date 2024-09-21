@@ -62,4 +62,9 @@ while game_is_on:
         ball.reset_position()
         score.increase_score(True)
 
+    # Game over condition
+    if score.game_over():
+        game_is_on = False
+        score.display_final_result()
+
 screen.exitonclick()

@@ -64,7 +64,6 @@ class Ball(Turtle):
         if self.detect_paddle_collision(paddle):
             self.x_move *= -1
             self.move_speed *= SPEED_OFFSET
-            print(self.move_speed)
 
     def reset_position(self) -> None:
         """
