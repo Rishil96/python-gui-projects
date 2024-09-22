@@ -33,4 +33,9 @@ while game_is_on:
     car_manager.spawn_car()
     car_manager.move_all_cars()
 
+    # Detect collision of player with car
+    if car_manager.detect_collision(player=player):
+        game_is_on = False
+
+
 screen.exitonclick()

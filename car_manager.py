@@ -1,5 +1,6 @@
 import random
 from turtle import Turtle
+from player import Player
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
 MOVE_INCREMENT = 10
@@ -36,15 +37,24 @@ class CarManager:
     def __init__(self):
         self.all_cars = []
 
-    def spawn_car(self):
+    def spawn_car(self) -> None:
         spawn_chance = random.randint(1, 6)
         if spawn_chance == 1:
             new_car = Car()
             self.all_cars.append(new_car)
 
-    def move_all_cars(self):
+    def move_all_cars(self) -> None:
         """
         Function to move all cars
         """
         for car in self.all_cars:
             car.move()
+
+    def detect_collision(self, player: Player) -> bool:
+        """
+        Check if any car has collided with the player and return true if it has
+        """
+        for car in self.all_cars:
+            if car.distance(player) <= 25:
+                return True
+        return False
