@@ -3,6 +3,7 @@ import time
 from turtle import Screen
 from player import Player
 from car_manager import CarManager
+from scoreboard import Scoreboard
 
 # Screen config
 SCREEN_WIDTH = 600
@@ -16,6 +17,7 @@ screen.tracer(0)
 # Player turtle
 player = Player()
 car_manager = CarManager()
+score = Scoreboard()
 
 # Event listener to move turtle
 screen.listen()

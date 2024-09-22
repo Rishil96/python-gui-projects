@@ -4,7 +4,7 @@ from player import Player
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
 MOVE_INCREMENT = 10
-RANDOM_Y_RANGE = (-175, 175)
+RANDOM_Y_RANGE = (-170, 170)
 START_X = 280
 
 
