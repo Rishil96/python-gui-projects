@@ -36,6 +36,14 @@ class Scoreboard(Turtle):
         """
         Update scoreboard
         """
+        self.clear()
         self.set_playground()
         self.goto(-150, 250)
         self.write(f"Level: {self.level}", align=ALIGNMENT, font=FONT)
+
+    def increase_score(self) -> None:
+        """
+        Function to increase score of player
+        """
+        self.level += 1
+        self.update_scoreboard()

@@ -3,7 +3,7 @@ from turtle import Turtle
 from player import Player
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
-MOVE_INCREMENT = 10
+MOVE_INCREMENT = 5
 RANDOM_Y_RANGE = (-170, 170)
 START_X = 280
 
@@ -23,11 +23,11 @@ class Car(Turtle):
         random_y = random.randint(*RANDOM_Y_RANGE)
         self.goto(START_X, random_y)
 
-    def move(self):
+    def move(self, move_speed: int):
         """
         Move car from right to left
         """
-        self.forward(MOVE_INCREMENT)
+        self.forward(move_speed)
 
 
 class CarManager:
@@ -36,6 +36,7 @@ class CarManager:
     """
     def __init__(self):
         self.all_cars = []
+        self.move_speed = 10
 
     def spawn_car(self) -> None:
         spawn_chance = random.randint(1, 6)
@@ -48,7 +49,7 @@ class CarManager:
         Function to move all cars
         """
         for car in self.all_cars:
-            car.move()
+            car.move(self.move_speed)
 
     def detect_collision(self, player: Player) -> bool:
         """
@@ -58,3 +59,9 @@ class CarManager:
             if car.distance(player) <= 25:
                 return True
         return False
+
+    def increase_difficulty(self) -> None:
+        """
+        Increase the speed of cars once player completes a level
+        """
+        self.move_speed += MOVE_INCREMENT
