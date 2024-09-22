@@ -37,7 +37,13 @@ while game_is_on:
 
     # Detect collision of player with car
     if car_manager.detect_collision(player=player):
+        score.game_over()
         game_is_on = False
 
+    # Check if player has crossed finish line
+    if player.reached_finish_line():
+        score.increase_score()
+        car_manager.increase_difficulty()
+        player.back_to_starting_position()
 
 screen.exitonclick()
