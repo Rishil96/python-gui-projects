@@ -55,6 +55,6 @@ while game_is_on:
         writer.write(f"{state_name}", font=("Courier", 8, "normal"), align="center")
 
 # After game exit, write all missed states in a csv to return to the user
-states.to_csv("missed_states.csv")
-
-screen.mainloop()
+states.reset_index(inplace=True)
+missed_states = states["state"]
+missed_states.to_csv("missed_states.csv")
