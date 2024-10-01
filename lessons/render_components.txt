@@ -1,0 +1,9 @@
+Rendering Components in Tkinter using pack, place and grid
+
+pack: by default, it places components one below the other unless side parameter is used.
+
+place: involves precise positioning. We provide x-axis and y-axis to pinpoint the location where we want to place the component.
+
+grid: imagine the entire screen as a grid of rows and columns. It is relative to other components and not fixed like place
+
+Recommended only to use one kind in a given GUI.
