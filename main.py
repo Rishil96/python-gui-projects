@@ -17,15 +17,14 @@ CHECKMARK = "✓"
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
-    total_seconds = WORK_MIN * 60
+    total_seconds = timer * 60
     count_down(total_seconds)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def count_down(total_seconds):
-    # Extract minutes left from total seconds and format it
+    # Extract minutes left from total seconds
     curr_minutes = total_seconds // 60
-    curr_minutes = f"0{curr_minutes}" if curr_minutes <= 9 else curr_minutes
 
     # Extract seconds per minute left from total seconds and format it
     curr_seconds = total_seconds % 60
@@ -39,10 +38,32 @@ def count_down(total_seconds):
         window.after(1000, count_down, total_seconds - 1)
 
 
+# ---------------------------- MODE SWITCH MECHANISM ------------------------------- #
+def set_work_mode():
+    global timer
+    canvas.itemconfig(timer_text, text=f"{WORK_MIN}:00")
+    timer = WORK_MIN
+
+
+def set_short_break_mode():
+    global timer
+    canvas.itemconfig(timer_text, text=f"{SHORT_BREAK_MIN}:00")
+    timer = SHORT_BREAK_MIN
+
+
+def set_long_break_mode():
+    global timer
+    canvas.itemconfig(timer_text, text=f"{LONG_BREAK_MIN}:00")
+    timer = LONG_BREAK_MIN
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Pomodoro")
 window.config(padx=100, pady=50, bg=YELLOW)
+
+# Timer Type
+timer = WORK_MIN
 
 # Create heading label
 timer_label = Label(text="Timer", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40, "bold"))
@@ -55,7 +76,7 @@ tomato_photo = PhotoImage(file="tomato.png")
 # Add the image on canvas
 canvas.create_image(100, 112, image=tomato_photo)
 # Add text on canvas
-timer_text = canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold"))
+timer_text = canvas.create_text(100, 130, text=f"{timer}:00", fill="white", font=(FONT_NAME, 35, "bold"))
 canvas.grid(row=1, column=1)
 
 # Start button
@@ -71,5 +92,20 @@ reset_btn.grid(row=2, column=2)
 # Checkmark label
 check_mark = Label(text=CHECKMARK, fg=GREEN, font=(FONT_NAME, 25, "bold"), bg=YELLOW)
 check_mark.grid(row=3, column=1)
+
+# Buttons to set timer to work mode
+work_button = Button(text="Work mode", font=(FONT_NAME, 15, "bold"))
+work_button.config(borderwidth=0, command=set_work_mode)
+work_button.grid(row=4, column=0)
+
+# Buttons to set timer to short break mode
+work_button = Button(text="Short break", font=(FONT_NAME, 15, "bold"))
+work_button.config(borderwidth=0, command=set_short_break_mode)
+work_button.grid(row=4, column=1)
+
+# Buttons to set timer to long break mode
+work_button = Button(text="Long break", font=(FONT_NAME, 15, "bold"))
+work_button.config(borderwidth=0, command=set_long_break_mode)
+work_button.grid(row=4, column=2)
 
 window.mainloop()
