@@ -12,17 +12,29 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 CHECKMARK = "✓"
 
+
 # ---------------------------- TIMER RESET ------------------------------- # 
+def reset_application():
+    global timer_refresh, work_sessions
+    work_sessions = 0
+    window.after_cancel(timer_refresh)
+    canvas.itemconfig(timer_text, text="0:00")
+    timer_label.config(text="-TIMER-", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40, "bold"))
 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
+    global work_sessions
+    is_work_session = timer == WORK_MIN
     total_seconds = timer * 60
-    count_down(total_seconds)
+    count_down(total_seconds, is_work_session)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
-def count_down(total_seconds):
+def count_down(total_seconds, is_work_session):
+
+    global work_sessions, timer_refresh
+
     # Extract minutes left from total seconds
     curr_minutes = total_seconds // 60
 
@@ -35,24 +47,31 @@ def count_down(total_seconds):
     # If time still remaining, then reduce time by 1-second and call function again
     if total_seconds > 0:
         # Calls the count_down function recursively after every 1 second
-        window.after(1000, count_down, total_seconds - 1)
+        timer_refresh = window.after(1000, count_down, total_seconds - 1, is_work_session)
+    else:
+        if is_work_session:
+            work_sessions += 1
+            check_mark.config(text=f"{CHECKMARK * work_sessions}")
 
 
 # ---------------------------- MODE SWITCH MECHANISM ------------------------------- #
 def set_work_mode():
     global timer
+    timer_label.config(text="WORK!!!", fg=GREEN)
     canvas.itemconfig(timer_text, text=f"{WORK_MIN}:00")
     timer = WORK_MIN
 
 
 def set_short_break_mode():
     global timer
+    timer_label.config(text="BREAK:D", fg=PINK)
     canvas.itemconfig(timer_text, text=f"{SHORT_BREAK_MIN}:00")
     timer = SHORT_BREAK_MIN
 
 
 def set_long_break_mode():
     global timer
+    timer_label.config(text="BREAK:D", fg=RED)
     canvas.itemconfig(timer_text, text=f"{LONG_BREAK_MIN}:00")
     timer = LONG_BREAK_MIN
 
@@ -64,9 +83,11 @@ window.config(padx=100, pady=50, bg=YELLOW)
 
 # Timer Type
 timer = WORK_MIN
+work_sessions = 0
+timer_refresh = "after#0"
 
 # Create heading label
-timer_label = Label(text="Timer", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40, "bold"))
+timer_label = Label(text="-TIMER-", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40, "bold"))
 timer_label.grid(row=0, column=1)
 
 # Create image using PhotoImage class and create a canvas that lets us put things on top of it
@@ -76,7 +97,7 @@ tomato_photo = PhotoImage(file="tomato.png")
 # Add the image on canvas
 canvas.create_image(100, 112, image=tomato_photo)
 # Add text on canvas
-timer_text = canvas.create_text(100, 130, text=f"{timer}:00", fill="white", font=(FONT_NAME, 35, "bold"))
+timer_text = canvas.create_text(100, 130, text=f"0:00", fill="white", font=(FONT_NAME, 35, "bold"))
 canvas.grid(row=1, column=1)
 
 # Start button
@@ -85,12 +106,12 @@ start_btn.config(borderwidth=0, command=start_timer)
 start_btn.grid(row=2, column=0)
 
 # Reset button
-reset_btn = Button(text="Reset", font=(FONT_NAME, 15, "bold"))
+reset_btn = Button(text="Reset", font=(FONT_NAME, 15, "bold"), command=reset_application)
 reset_btn.config(borderwidth=0)
 reset_btn.grid(row=2, column=2)
 
 # Checkmark label
-check_mark = Label(text=CHECKMARK, fg=GREEN, font=(FONT_NAME, 25, "bold"), bg=YELLOW)
+check_mark = Label(text=f"{CHECKMARK * work_sessions}", fg=GREEN, font=(FONT_NAME, 25, "bold"), bg=YELLOW)
 check_mark.grid(row=3, column=1)
 
 # Buttons to set timer to work mode
