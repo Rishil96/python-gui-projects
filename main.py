@@ -20,6 +20,7 @@ def reset_timer():
     window.after_cancel(timer_refresh)
     canvas.itemconfig(timer_text, text="0:00")
     timer_label.config(text="-TIMER-", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40, "bold"))
+    check_mark.config(text="")
 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
