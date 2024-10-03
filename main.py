@@ -14,7 +14,7 @@ CHECKMARK = "✓"
 
 
 # ---------------------------- TIMER RESET ------------------------------- # 
-def reset_application():
+def reset_timer():
     global timer_refresh, work_sessions
     work_sessions = 0
     window.after_cancel(timer_refresh)
@@ -106,7 +106,7 @@ start_btn.config(borderwidth=0, command=start_timer)
 start_btn.grid(row=2, column=0)
 
 # Reset button
-reset_btn = Button(text="Reset", font=(FONT_NAME, 15, "bold"), command=reset_application)
+reset_btn = Button(text="Reset", font=(FONT_NAME, 15, "bold"), command=reset_timer)
 reset_btn.config(borderwidth=0)
 reset_btn.grid(row=2, column=2)
 
