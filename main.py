@@ -14,9 +14,30 @@ CHECKMARK = "✓"
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+# ---------------------------- TIMER MECHANISM ------------------------------- #
+def start_timer():
+    total_seconds = WORK_MIN * 60
+    count_down(total_seconds)
+
+
+# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
+def count_down(total_seconds):
+    # Extract minutes left from total seconds and format it
+    curr_minutes = total_seconds // 60
+    curr_minutes = f"0{curr_minutes}" if curr_minutes <= 9 else curr_minutes
+
+    # Extract seconds per minute left from total seconds and format it
+    curr_seconds = total_seconds % 60
+    curr_seconds = f"0{curr_seconds}" if curr_seconds <= 9 else curr_seconds
+
+    # Write remaining time in minutes on the canvas
+    canvas.itemconfig(timer_text, text=f"{curr_minutes}:{curr_seconds}")
+    # If time still remaining, then reduce time by 1-second and call function again
+    if total_seconds > 0:
+        # Calls the count_down function recursively after every 1 second
+        window.after(1000, count_down, total_seconds - 1)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -34,12 +55,12 @@ tomato_photo = PhotoImage(file="tomato.png")
 # Add the image on canvas
 canvas.create_image(100, 112, image=tomato_photo)
 # Add text on canvas
-canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold"))
+timer_text = canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold"))
 canvas.grid(row=1, column=1)
 
 # Start button
 start_btn = Button(text="Start", font=(FONT_NAME, 15, "bold"))
-start_btn.config(borderwidth=0)
+start_btn.config(borderwidth=0, command=start_timer)
 start_btn.grid(row=2, column=0)
 
 # Reset button
