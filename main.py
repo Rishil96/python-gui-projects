@@ -1,5 +1,6 @@
 # Password Manager
 from tkinter import *
+from tkinter import messagebox
 
 
 # ------------------------------- SAVE DATA ---------------------------------- #
@@ -8,9 +9,36 @@ def save_data():
     website_input = website_entry.get()
     email_input = email_entry.get()
     password_input = password_entry.get()
-    data = f"{website_input} | {email_input} | {password_input}\n"
-    with open("data.txt", "a") as f:
-        f.write(data)
+
+    if len(website_input) == 0 or len(email_input) == 0 or len(password_input) == 0:
+        messagebox.showinfo(title="OOPS!", message="Please don't leave any fields empty!")
+        return
+
+    # Popup box for user confirmation
+    is_ok = messagebox.askokcancel(title=website_input, message="Here are the details of your password:-\n"
+                                                                f"Username/Email: {email_input}\n"
+                                                                f"Password: {password_input}\n"
+                                                                f"Do you want to go ahead and save this?")
+
+    if is_ok:
+        # Write password details in file
+        data = f"{website_input} | {email_input} | {password_input}\n"
+        with open("data.txt", "a") as f:
+            f.write(data)
+
+        # Clear entry data
+        website_entry.delete(0, END)
+        password_entry.delete(0, END)
+        # Info popup
+        messagebox.showinfo(title=website_input, message="Password was saved successfully!")
+    else:
+        # Info popup
+        messagebox.showinfo(title=website_input, message="Password was not saved.")
+
+    # Bring focus back to first entry
+    website_entry.focus()
+
+    return
 
 
 # ------------------------------- UI SETUP ---------------------------------- #
