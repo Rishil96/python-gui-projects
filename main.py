@@ -1,5 +1,6 @@
 # Password Manager
 import random
+import pyperclip
 from tkinter import *
 from tkinter import messagebox
 
@@ -40,6 +41,9 @@ def generate_password():
     password = ''.join(password_list)
     password_entry.delete(0, END)
     password_entry.insert(index=0, string=password)
+
+    # Copy password in our clipboard
+    pyperclip.copy(password)
 
     return
 
