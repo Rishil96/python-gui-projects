@@ -1,6 +1,18 @@
 # Password Manager
 from tkinter import *
 
+
+# ------------------------------- SAVE DATA ---------------------------------- #
+def save_data():
+    # Get website, email and password entry
+    website_input = website_entry.get()
+    email_input = email_entry.get()
+    password_input = password_entry.get()
+    data = f"{website_input} | {email_input} | {password_input}\n"
+    with open("data.txt", "a") as f:
+        f.write(data)
+
+
 # ------------------------------- UI SETUP ---------------------------------- #
 
 window = Tk()
@@ -28,6 +40,7 @@ password_label.grid(row=3, column=0)
 # Website input field
 website_entry = Entry(width=54)
 website_entry.grid(row=1, column=1, columnspan=2)
+website_entry.focus()
 
 # Email input field
 email_entry = Entry(width=54)
@@ -42,7 +55,7 @@ generate_button = Button(text="Generate Password", borderwidth=1)
 generate_button.grid(row=3, column=2)
 
 # Add button
-add_button = Button(text="Add", width=45, pady=5, borderwidth=1)
+add_button = Button(text="Add", width=45, pady=5, borderwidth=1, command=save_data)
 add_button.grid(row=4, column=1, columnspan=2)
 
 
