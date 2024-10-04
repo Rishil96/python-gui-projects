@@ -20,19 +20,18 @@ def generate_password():
     password_list = []
 
     # Get random letters
-    for i in range(0, letter_count):
-        random_letter = random.choice(letters)
-        password_list.append(random_letter)
+    letters_list = [random.choice(letters) for _ in range(0, letter_count)]
 
     # Get random numbers
-    for i in range(0, number_count):
-        random_number = random.choice(numbers)
-        password_list.append(random_number)
+    numbers_list = [random.choice(numbers) for _ in range(0, number_count)]
 
     # Get random symbols
-    for i in range(0, symbol_count):
-        random_symbol = random.choice(symbols)
-        password_list.append(random_symbol)
+    symbols_list = [random.choice(symbols) for _ in range(0, symbol_count)]
+
+    # Add letters, numbers, and symbols in password list
+    password_list.extend(letters_list)
+    password_list.extend(numbers_list)
+    password_list.extend(symbols_list)
 
     # Shuffle password characters
     random.shuffle(password_list)
