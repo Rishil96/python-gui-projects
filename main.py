@@ -6,6 +6,33 @@ from tkinter import *
 from tkinter import messagebox
 
 
+# ------------------------------- SEARCH DATA ---------------------------------- #
+def search_data():
+
+    # Read website name to search for it
+    website = website_entry.get()
+    if len(website) == 0:
+        messagebox.showerror(title="ERROR", message="Please type the name of the website first!")
+        return
+
+    # Open the data file
+    try:
+        with open("data.json", "r") as json_file:
+            password_db = json.load(json_file)
+
+    except FileNotFoundError:
+        messagebox.showerror(title="ERROR", message="No password database found, try adding some passwords first")
+
+    else:
+        try:
+            display_data = password_db[website]
+        except KeyError:
+            messagebox.showerror(title="404", message=f"Password not found for {website}")
+        else:
+            messagebox.showinfo(title=website, message=f"Email/Username: {password_db[website]["email"]}\n"
+                                                       f"Password: {password_db[website]["password"]}")
+
+
 # ------------------------------- PASSWORD GENERATOR ---------------------------------- #
 def generate_password():
     # Python Password Generator
@@ -134,8 +161,8 @@ password_label = Label(text="Password:", pady=5)
 password_label.grid(row=3, column=0)
 
 # Website input field
-website_entry = Entry(width=54)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=35)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
 
 # Email input field
@@ -154,5 +181,8 @@ generate_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=45, pady=5, borderwidth=1, command=save_data)
 add_button.grid(row=4, column=1, columnspan=2)
 
+# Search button
+search_button = Button(text="Search", borderwidth=1, width=14, command=search_data)
+search_button.grid(row=1, column=2)
 
 window.mainloop()
