@@ -1,6 +1,7 @@
 # Password Manager
 import random
 import pyperclip
+import json
 from tkinter import *
 from tkinter import messagebox
 
@@ -65,17 +66,39 @@ def save_data():
                                                                 f"Password: {password_input}\n"
                                                                 f"Do you want to go ahead and save this?")
 
-    if is_ok:
-        # Write password details in file
-        data = f"{website_input} | {email_input} | {password_input}\n"
-        with open("data.txt", "a") as f:
-            f.write(data)
+    # Write data in JSON format
+    password_data = {
+        website_input: {
+            "email": email_input,
+            "password": password_input,
+        }
+    }
 
-        # Clear entry data
-        website_entry.delete(0, END)
-        password_entry.delete(0, END)
-        # Info popup
-        messagebox.showinfo(title=website_input, message="Password was saved successfully!")
+    if is_ok:
+        try:
+            # Read JSON data and update it with new data in code
+            with open("data.json", "r") as json_file:
+                # Read JSON data
+                full_data = json.load(json_file)
+
+        except FileNotFoundError:
+            print("No database found. Creating a new one...")
+            with open("data.json", "w") as json_file:
+                json.dump(password_data, json_file, indent=4)
+
+        else:
+            full_data.update(password_data)
+            # Write updated JSON back to the file
+            with open("data.json", "w") as json_file:
+                json.dump(full_data, json_file, indent=4)
+
+        finally:
+            print("Data added successfully!")
+            # Clear entry data
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
+            # Info popup
+            messagebox.showinfo(title=website_input, message="Password was saved successfully!")
     else:
         # Info popup
         messagebox.showinfo(title=website_input, message="Password was not saved.")
