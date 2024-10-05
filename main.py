@@ -29,8 +29,8 @@ def search_data():
         except KeyError:
             messagebox.showerror(title="404", message=f"Password not found for {website}")
         else:
-            messagebox.showinfo(title=website, message=f"Email/Username: {password_db[website]["email"]}\n"
-                                                       f"Password: {password_db[website]["password"]}")
+            messagebox.showinfo(title=website, message=f"Email/Username: {display_data["email"]}\n"
+                                                       f"Password: {display_data["password"]}")
 
 
 # ------------------------------- PASSWORD GENERATOR ---------------------------------- #
