@@ -7,32 +7,20 @@ BACKGROUND_COLOR = "#B1DDC6"
 
 # --------------------------- APP DATA SETUP -----------------------------------#
 kanji_data = pd.read_csv("data/kanji.csv")
+to_learn = kanji_data.to_dict(orient="records")
 
 
-def get_random_kanji() -> pd.Series:
-    """
-    This function returns a random kanji from the kanji data
-    """
-    data_length = len(kanji_data)
-    random_index = random.randint(0, data_length - 1)
-    random_kanji = kanji_data.iloc[random_index, :]
-
-    return random_kanji
-
-
-def update_canvas() -> None:
+def next_card() -> None:
     """
     This function runs when a button is clicked on screen and updates screen with a new and random kanji
     """
     # Get data
-    random_kanji = get_random_kanji()
-    kanji_character = random_kanji.Kanji
-    onyomi_info = random_kanji.Onyomi
-    kunyomi_info = random_kanji.Kunyomi
+    random_kanji = random.choice(to_learn)
+
     # Update canvas
-    canvas.itemconfig(kanji, text=kanji_character)
-    canvas.itemconfig(onyomi, text=f"Onyomi: {onyomi_info}")
-    canvas.itemconfig(kunyomi, text=f"Kunyomi: {kunyomi_info}")
+    canvas.itemconfig(kanji, text=random_kanji.get("Kanji"))
+    canvas.itemconfig(onyomi, text=f"Onyomi: {random_kanji.get("Onyomi")}")
+    canvas.itemconfig(kunyomi, text=f"Kunyomi: {random_kanji.get("Kunyomi")}")
 
 
 # --------------------------- UI SETUP -----------------------------------#
@@ -59,12 +47,12 @@ canvas.grid(row=0, column=0, columnspan=2)
 right_img = PhotoImage(file="images/right.png")
 wrong_img = PhotoImage(file="images/wrong.png")
 
-right_button = Button(image=right_img, highlightthickness=0, borderwidth=0, command=update_canvas)
+right_button = Button(image=right_img, highlightthickness=0, borderwidth=0, command=next_card)
 right_button.grid(row=1, column=0)
-wrong_button = Button(image=wrong_img, highlightthickness=0, borderwidth=0, command=update_canvas)
+wrong_button = Button(image=wrong_img, highlightthickness=0, borderwidth=0, command=next_card)
 wrong_button.grid(row=1, column=1)
 
-update_canvas()
+next_card()
 
 
 window.mainloop()
