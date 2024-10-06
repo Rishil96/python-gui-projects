@@ -1,5 +1,4 @@
 # Flash Card Learning app
-from idlelib.configdialog import font_sample_text
 from tkinter import *
 import pandas as pd
 import random
@@ -7,6 +6,7 @@ import random
 BACKGROUND_COLOR = "#B1DDC6"
 KANJI_FONT = ("Arial", 75, "bold")
 MEANING_FONT = ("Arial", 30, "bold")
+FLIP_DURATION = 5000
 
 # --------------------------- APP DATA SETUP -----------------------------------#
 kanji_data = pd.read_csv("data/kanji.csv")
@@ -17,19 +17,23 @@ def next_card() -> None:
     """
     This function runs when a button is clicked on screen and updates screen with a new and random kanji
     """
+    # Cancels previous timers on multiple user clicks
+    global flip_timer
+    window.after_cancel(flip_timer)
+
     # Get data
     random_kanji = random.choice(to_learn)
 
     # Update canvas
     canvas.itemconfig(canvas_image, image=card_front)
-    canvas.itemconfig(title, text="Japanese Kanji")
+    canvas.itemconfig(title, text="Japanese Kanji", fill="black")
     canvas.itemconfig(kanji, text=random_kanji.get("Kanji"), font=KANJI_FONT)
     canvas.itemconfig(english_meaning, text="")
     canvas.itemconfig(onyomi, text=f"Onyomi: {random_kanji.get("Onyomi")}")
     canvas.itemconfig(kunyomi, text=f"Kunyomi: {random_kanji.get("Kunyomi")}")
 
-    # Flip card after 3 seconds
-    window.after(3000, flip_card, random_kanji)
+    # Flip card after 5 seconds
+    flip_timer = window.after(FLIP_DURATION, flip_card, random_kanji)
 
 
 def flip_card(kanji_card: dict):
@@ -37,8 +41,8 @@ def flip_card(kanji_card: dict):
     This function flips the card which is the answer to the question
     """
     canvas.itemconfig(canvas_image, image=card_back)
-    canvas.itemconfig(title, text="English Meaning")
-    canvas.itemconfig(english_meaning, text=f"{kanji_card["Kanji Meaning"]}")
+    canvas.itemconfig(title, text="English Meaning", fill="white")
+    canvas.itemconfig(english_meaning, text=f"{kanji_card["Kanji Meaning"]}", fill="white")
     canvas.itemconfig(kanji, text="")
     canvas.itemconfig(onyomi, text="")
     canvas.itemconfig(kunyomi, text="")
@@ -49,6 +53,9 @@ def flip_card(kanji_card: dict):
 window = Tk()
 window.title("Kanji Flash Card")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
+
+# Timer variable
+flip_timer = "after#0"
 
 # Add card image using canvas
 canvas = Canvas(width=800, height=526)
