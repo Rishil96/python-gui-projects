@@ -10,4 +10,4 @@ kanji_table = kanji_table[0]
 
 # Write the kanji table in CSV file
 kanji_table.to_csv("data/kanji_db.csv")
-kanji_table.to_csv("data/to_learn_kanji.csv")
+kanji_table.to_csv("data/to_learn_kanji.csv", index=False)

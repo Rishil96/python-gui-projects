@@ -13,27 +13,28 @@ kanji_data = pd.read_csv("data/to_learn_kanji.csv")
 to_learn = kanji_data.to_dict(orient="records")
 
 
+# --------------------------- NEXT CARD LOGIC -----------------------------------#
 def next_card() -> None:
     """
     This function runs when a button is clicked on screen and updates screen with a new and random kanji
     """
     # Cancels previous timers on multiple user clicks
-    global flip_timer
+    global flip_timer, current_card
     window.after_cancel(flip_timer)
 
     # Get data
-    random_kanji = random.choice(to_learn)
+    current_card = random.choice(to_learn)
 
     # Update canvas
     canvas.itemconfig(canvas_image, image=card_front)
     canvas.itemconfig(title, text="Japanese Kanji", fill="black")
-    canvas.itemconfig(kanji, text=random_kanji.get("Kanji"), font=KANJI_FONT)
+    canvas.itemconfig(kanji, text=current_card.get("Kanji"), font=KANJI_FONT)
     canvas.itemconfig(english_meaning, text="")
-    canvas.itemconfig(onyomi, text=f"Onyomi: {random_kanji.get("Onyomi")}")
-    canvas.itemconfig(kunyomi, text=f"Kunyomi: {random_kanji.get("Kunyomi")}")
+    canvas.itemconfig(onyomi, text=f"Onyomi: {current_card.get("Onyomi")}")
+    canvas.itemconfig(kunyomi, text=f"Kunyomi: {current_card.get("Kunyomi")}")
 
     # Flip card after 5 seconds
-    flip_timer = window.after(FLIP_DURATION, flip_card, random_kanji)
+    flip_timer = window.after(FLIP_DURATION, flip_card, current_card)
 
 
 def flip_card(kanji_card: dict):
@@ -48,13 +49,26 @@ def flip_card(kanji_card: dict):
     canvas.itemconfig(kunyomi, text="")
 
 
+def is_known():
+    """
+    Function to remove kanji from to learn csv
+    """
+    global current_card
+    # Update learning material by removing learned kanji
+    to_learn.remove(current_card)
+    updated_to_learn_data = pd.DataFrame(to_learn)
+    updated_to_learn_data.to_csv("data/to_learn_kanji.csv", index=False)
+    next_card()
+
+
 # --------------------------- UI SETUP -----------------------------------#
 
 window = Tk()
 window.title("Kanji Flash Card")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
-# Timer variable
+# Timer and card variable
+current_card = {}
 flip_timer = "after#0"
 
 # Add card image using canvas
@@ -78,12 +92,11 @@ canvas.grid(row=0, column=0, columnspan=2)
 right_img = PhotoImage(file="images/right.png")
 wrong_img = PhotoImage(file="images/wrong.png")
 
-right_button = Button(image=right_img, highlightthickness=0, borderwidth=0, command=next_card)
+right_button = Button(image=right_img, highlightthickness=0, borderwidth=0, command=is_known)
 right_button.grid(row=1, column=0)
 wrong_button = Button(image=wrong_img, highlightthickness=0, borderwidth=0, command=next_card)
 wrong_button.grid(row=1, column=1)
 
 next_card()
-
 
 window.mainloop()
