@@ -9,7 +9,7 @@ MEANING_FONT = ("Arial", 30, "bold")
 FLIP_DURATION = 5000
 
 # --------------------------- APP DATA SETUP -----------------------------------#
-kanji_data = pd.read_csv("data/kanji.csv")
+kanji_data = pd.read_csv("data/to_learn_kanji.csv")
 to_learn = kanji_data.to_dict(orient="records")
 
 

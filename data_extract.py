@@ -9,4 +9,5 @@ kanji_table = kanji_table[0]
 # Kunyomi: is the native Japanese reading of a kanji character
 
 # Write the kanji table in CSV file
-kanji_table.to_csv("kanji.csv")
+kanji_table.to_csv("data/kanji_db.csv")
+kanji_table.to_csv("data/to_learn_kanji.csv")
